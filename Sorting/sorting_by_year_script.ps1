@@ -2,7 +2,9 @@
 $location = Get-Location
 $files = Get-ChildItem $location
 
-
+<#
+Checks if a string matches a date in MMDDYYYY format    
+#>
 function isDate {
     param( [String]$date )
 
@@ -15,18 +17,23 @@ function isDate {
         if ( $month -le 12 -and $month -ge 1 -and $day -le 31 -and $day -ge 1 -and $year -ge 2014 -and $year -le 2099 ) {
             return $True
         }
-
     }
 }
 
-
+<#
+Retrieves the date from a string
+Precondition: String is a date
+#>
 function getYear {
     param( [String]$date )
 
     return $date.Substring( 4 )
 }
 
-
+<#
+Main function that sorts a file containing a date into 
+directories for different years
+#>
 function main {
     
     foreach ( $file in $files ) {
@@ -35,7 +42,6 @@ function main {
         foreach( $part in $fileNameParts ) {
         
             if ( isDate( $part ) ) {
-                
                 $year = getYear( $part )
                 $destination = ".\" + $year
 
@@ -45,13 +51,9 @@ function main {
 
                 $file | Move-Item -Destination $destination
                 Break
-
             }
-
         }
-
     }
-
 }
 
 main
